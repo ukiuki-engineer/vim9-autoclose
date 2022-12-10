@@ -27,13 +27,13 @@ inoremap ' ''<LEFT>
 #### プラグインマネージャ経由
 以下を.vimrcに記述する
 ```
-Plug 'hagemanto-saitama/vim-autoload' # vim-plugの場合
-NeoBundle 'hagemanto-saimata/vim-autoload' # NeoBundleの場合
+Plug 'hagemanto-saitama/vim9-autoload' # vim-plugの場合
+NeoBundle 'hagemanto-saimata/vim9-autoload' # NeoBundleの場合
 ```
 #### 手動
 ```.vim/pack/plugins/start```というディレクトリを作成し、そこにこのプラグインを配置する
 ```
 mkdir -p ~/.vim/pack/plugins/start
 cd ~/.vim/pack/plugins/start
-git clone https://github.com/hagemanto-saitama/vim-autoload
+git clone https://github.com/hagemanto-saitama/vim9-autoload
 ```
