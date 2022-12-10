@@ -32,10 +32,6 @@ def StopWriteCloseBracket(closeBracket: string): string
 enddef
 
 # クォーテーション補完
-## カーソルの左右にクォーテーションがあるとき、カーソルを右に移動する
-## カーソルの前の文字が、アルファベット、数字、全角文字、クォーテーションのとき、クォーテーションを入力
-## カーソルの後ろの文字が、空（行末）、閉じ括弧、空白（半角スペース）のとき、クォーテーションを２つ入力してカーソルを中心に移動する
-## 上記のどれでもないときも、クォーテーションを入力
 def AutoCloseQuot(quot: string): string
   var prevChar = getline('.')[col('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[col('.') - 1] # カーソルの次の文字
