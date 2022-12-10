@@ -19,13 +19,13 @@ def WriteCloseBracket(bracket: string): string
     return bracket
   endif
 enddef
-
 # 閉じ括弧入力を止める関数
+# FIXME: 日本語の後だと効かない
 def StopWriteCloseBracket(closeBracket: string): string
   var nextChar = getline('.')[col('.') - 1] # カーソルの次の文字
 
   if nextChar == closeBracket
-    return "\<RIGHT>"
+        return "\<RIGHT>"
   else
     return closeBracket
   endif
@@ -54,16 +54,17 @@ enddef
 
 # FIXME:Enter対応
 
-# 閉じタグを補完する関数
-# FIXME: 未実装
-def WriteCloseTag(): string
-  # <文字列>が入力されると</文字列>が入力される
+# FIXME: 閉じタグを補完する関数(未実装)
+# <文字列>が入力されると</文字列>が入力される
+# TODO: 指定された拡張子の時のみ有効
+# TODO: </文字列>の文字数分\<LEFT>を出力
+# TODO: 属性名を取得→<>内の文字列を取得して加工する？
+def WriteCloseTag(ket: string): string
+  # return ket .. "</>\<LEFT>\<LEFT>"
 enddef
-
 # memo:
 # <expr>を付けないと、WriteCloseBracket("(")
 # という文字列がそのまま出力されてしまう
-
 # 括弧入力
 inoremap <expr> ( WriteCloseBracket("(")
 inoremap <expr> { WriteCloseBracket("{")
@@ -76,4 +77,5 @@ inoremap <expr> ] StopWriteCloseBracket("]")
 inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
-
+# 
+inoremap <expr> > WriteCloseTag(">")
