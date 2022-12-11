@@ -77,5 +77,5 @@ inoremap <expr> ] StopWriteCloseBracket("]")
 inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
-# 
-inoremap <expr> > WriteCloseTag(">")
+# タグ入力
+# inoremap <expr> > WriteCloseTag(">")
