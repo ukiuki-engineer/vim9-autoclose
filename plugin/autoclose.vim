@@ -19,6 +19,7 @@ def WriteCloseBracket(bracket: string): string
     return bracket
   endif
 enddef
+
 # 閉じ括弧入力を止める関数
 # FIXME: 日本語の後だと効かない
 def StopWriteCloseBracket(closeBracket: string): string
@@ -62,6 +63,7 @@ enddef
 def WriteCloseTag(ket: string): string
   # return ket .. "</>\<LEFT>\<LEFT>"
 enddef
+
 # memo:
 # <expr>を付けないと、WriteCloseBracket("(")
 # という文字列がそのまま出力されてしまう
