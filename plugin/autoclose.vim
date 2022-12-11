@@ -60,9 +60,23 @@ enddef
 # TODO: 指定された拡張子の時のみ有効
 # TODO: </文字列>の文字数分\<LEFT>を出力
 # TODO: 属性名を取得→<>内の文字列を取得して加工する？
+# 
 def WriteCloseTag(ket: string): string
-  # return ket .. "</>\<LEFT>\<LEFT>"
+  var prevChar = getline('.')[col('.') - 2] # カーソルの前の文字
+  if prevChar == "/" # />で閉じる場合は閉じタグ補完を行わない
+    return ket
+  endif
+  # 一文字ずつ左の文字を読み取る
+  # <の一の列番を取得
+  # <と>の間の文字列を取得
+  # スペース以降を削除
+  var tagName = "div"
+  # echo strlen(tagName)
+  # echo "</" .. tagName .. ">"
+  return ket
+  # return "</" .. tagName .. ">"
 enddef
+
 
 # memo:
 # <expr>を付けないと、WriteCloseBracket("(")
@@ -80,4 +94,6 @@ inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
 # タグ入力
-# inoremap <expr> > WriteCloseTag(">")
+if 1 != 1 # FIXME: filetypeによる分岐
+  inoremap <expr> > WriteCloseTag(">")
+endif
