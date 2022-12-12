@@ -55,26 +55,34 @@ enddef
 
 # FIXME:Enter対応
 
-# FIXME: 閉じタグを補完する関数(未実装)
-# <文字列>が入力されると</文字列>が入力される
-# TODO: 指定された拡張子の時のみ有効
-# TODO: </文字列>の文字数分\<LEFT>を出力
-# TODO: 属性名を取得→<>内の文字列を取得して加工する？
-# 
-def WriteCloseTag(ket: string): string
-  var prevChar = getline('.')[col('.') - 2] # カーソルの前の文字
-  if prevChar == "/" # />で閉じる場合は閉じタグ補完を行わない
-    return ket
-  endif
+# FIXME: カーソルより前の一番近い要素名を取得する関数
+def FindElementName(): string
   # 一文字ずつ左の文字を読み取る
   # <の一の列番を取得
   # <と>の間の文字列を取得
   # スペース以降を削除
-  var tagName = "div"
-  # echo strlen(tagName)
-  # echo "</" .. tagName .. ">"
-  return ket
-  # return "</" .. tagName .. ">"
+  return "div" # モック
+enddef
+
+# FIXME: 閉じタグを補完する関数(未実装)
+# <文字列>が入力されると</文字列>が入力される
+# TODO: 指定された拡張子の時のみ有効
+def WriteCloseTag(ket: string): string
+  var prevChar = getline('.')[col('.') - 2] # カーソルの前の文字
+  # 以下の場合は閉じタグ補完を行わない
+  # ・/>で閉じる場合
+  # ・->と入力した場合
+  # ・=>と入力した場合
+  if prevChar == "/" || prevChar == "-" || prevChar == "="
+    return ket
+  endif
+
+  var elementName = FindElementName()
+  var cursorTransition = ""
+  for i in range(1, strlen(elementName) + 3)
+    cursorTransition = cursorTransition .. "\<LEFT>" # カーソルをタグと閉じタグの中央に移動
+  endfor
+  return ket .. "</" .. elementName .. ket .. cursorTransition
 enddef
 
 
@@ -94,6 +102,6 @@ inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
 # タグ入力
-if 1 != 1 # FIXME: filetypeによる分岐
+if 1 == 1 # FIXME: filetypeによる分岐
   inoremap <expr> > WriteCloseTag(">")
 endif
