@@ -134,6 +134,13 @@ inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
 # タグ入力
 # FIXME: vimrcでファイルタイプを追加できるようにする
-if &filetype == "html" || &filetype == "javascript" || &filetype == "blade" || &filetype == "erb" || &filetype == "vue"
-  inoremap <expr> > WriteCloseTag(">")
-endif
+au FileType html inoremap <expr> > WriteCloseTag(">")
+au FileType javascript inoremap <expr> > WriteCloseTag(">")
+au FileType blade inoremap <expr> > WriteCloseTag(">")
+au FileType vue inoremap <expr> > WriteCloseTag(">")
+au FileType erb inoremap <expr> > WriteCloseTag(">")
+au BufEnter *.html inoremap <expr> > WriteCloseTag(">")
+au BufEnter *.javascript inoremap <expr> > WriteCloseTag(">")
+au BufEnter *.blade.php inoremap <expr> > WriteCloseTag(">")
+au BufEnter *.erb inoremap <expr> > WriteCloseTag(">")
+au BufEnter *.vue inoremap <expr> > WriteCloseTag(">")
