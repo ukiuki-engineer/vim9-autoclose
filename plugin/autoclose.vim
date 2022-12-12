@@ -4,8 +4,7 @@ vim9script
 
 # 閉じ括弧を補完する関数
 def WriteCloseBracket(bracket: string): string
-  var brackets = { # 括弧のオブジェクト
-    "(": ")",
+  var brackets = { # 括弧のオブジェクト"(": ")",
     "{": "}",
     "[": "]"
   }
@@ -56,29 +55,45 @@ enddef
 
 # FIXME:Enter対応
 
-# FIXME: カーソルより前の一番近い要素名を取得する関数
-def FindElementName(ket: string): string
-  # カーソル行を検索
-  var strInTag = ""
-  for i in range(1, col('.'))
-    var targetChar = getline('.')[col('.') - 1 - i]
-    if targetChar == "<"
-      break
-    endif
-    strInTag = targetChar .. strInTag
-  endfor
+# 要素内文字列から要素名を抜き出す関数
+def TrimElementName(strInTag: string): string
   var elementName = ""
   for i in range(0, strlen(strInTag))
     if strInTag[i] == " "
       break
     endif
-    elementName = elementName .. strInTag[i]
+    if strInTag[i] != "<"
+      elementName = elementName .. strInTag[i]
+    endif
   endfor
-  # FIXME: カーソルより上の行を検索
-  #
   return elementName
 enddef
 
+# FIXME: カーソルより前の一番近い要素名を取得する関数(実装途中)
+def FindElementName(ket: string): string
+  # カーソル行を検索
+  var strInTag = ""
+  for i in range(1, col('.'))
+    var targetChar = getline('.')[col('.') - 1 - i]
+    strInTag = targetChar .. strInTag
+    if targetChar == "<"
+      break
+    endif
+  endfor
+  if "<" == matchstr(strInTag, "<")
+    return TrimElementName(strInTag)
+  endif
+  # カーソルより上の行を検索
+  var strOnLine = ""
+  for i in range(1, line('.') - 1)
+    strOnLine = getline(line('.') - i)
+    if "<" == matchstr(strOnLine, "<")
+      return TrimElementName(strOnLine)
+    endif
+  endfor
+  return ket
+enddef
+FindElementName(">")
 # FIXME: 閉じタグを補完する関数(実装途中)
 # <文字列>が入力されると</文字列>が入力される
 # TODO: 指定された拡張子の時のみ有効
@@ -117,9 +132,7 @@ inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
 # タグ入力
-# FIXME: filetypeによる分岐
-# TODO: ファイルタイプの配列を作る
+# FIXME: vimrcでファイルタイプを追加できるようにする
 if &filetype == "vim" || &filetype == "html" || &filetype == "blade"
   inoremap <expr> > WriteCloseTag(">")
-endif
 endif
