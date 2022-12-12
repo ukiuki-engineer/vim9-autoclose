@@ -4,7 +4,8 @@ vim9script
 
 # 閉じ括弧を補完する関数
 def WriteCloseBracket(bracket: string): string
-  var brackets = { # 括弧のオブジェクト"(": ")",
+  var brackets = { # 括弧のオブジェクト
+    "(": ")",
     "{": "}",
     "[": "]"
   }
@@ -133,6 +134,6 @@ inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
 # タグ入力
 # FIXME: vimrcでファイルタイプを追加できるようにする
-if &filetype == "vim" || &filetype == "html" || &filetype == "blade"
+if &filetype == "html" || &filetype == "javascript" || &filetype == "blade" || &filetype == "erb" || &filetype == "vue"
   inoremap <expr> > WriteCloseTag(">")
 endif
