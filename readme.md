@@ -16,7 +16,7 @@ inoremap ' ''<LEFT>
 上記補完をもっといい感じに発火するようにしたのがこのプラグインです。
 大体VSCodeの補完機能をイメージして実装しました。
 
-![image](https://user-images.githubusercontent.com/101523180/207128640-124e0302-2fc6-44bc-b27a-8c3fd174a59f.gif)
+![image](https://user-images.githubusercontent.com/101523180/207132447-974aabd8-e67f-4e55-b0e2-0b4ed5e05a1c.gif)
 
 ## 機能
 - 閉じ括弧の補完
