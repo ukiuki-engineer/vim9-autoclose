@@ -9,7 +9,7 @@ def WriteCloseBracket(bracket: string): string
     "{": "}",
     "[": "]"
   }
-  var nextChar = getline('.')[col('.') - 1] # カーソルの次の文字
+  var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
 
   # 以下の場合に括弧補完する
   # ・カーソルの次の文字が、なにもないとき（行末のとき）
@@ -24,9 +24,9 @@ def WriteCloseBracket(bracket: string): string
 enddef
 
 # 閉じ括弧入力を止める関数
-# FIXME: 日本語の後だと効かない
 def StopWriteCloseBracket(closeBracket: string): string
-  var nextChar = getline('.')[col('.') - 1] # カーソルの次の文字
+  var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
+  echo nextChar
 
   if nextChar == closeBracket
         return "\<RIGHT>"
@@ -38,8 +38,8 @@ enddef
 
 # クォーテーション補完
 def AutoCloseQuot(quot: string): string
-  var prevChar = getline('.')[col('.') - 2] # カーソルの前の文字
-  var nextChar = getline('.')[col('.') - 1] # カーソルの次の文字
+  var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
+  var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
 
   if (prevChar == quot && nextChar == quot) # カーソルの左右にクォーテンションがある場合
     return "\<RIGHT>"
@@ -77,8 +77,8 @@ enddef
 def FindElementName(ket: string): string
   # カーソル行を検索
   var strInTag = ""
-  for i in range(1, col('.'))
-    var targetChar = getline('.')[col('.') - 1 - i]
+  for i in range(1, charcol('.'))
+    var targetChar = getline('.')[charcol('.') - 1 - i]
     strInTag = targetChar .. strInTag
     if targetChar == "<"
       break
@@ -100,7 +100,7 @@ enddef
 FindElementName(">")
 # 閉じタグを補完する関数
 def WriteCloseTag(ket: string): string
-  var prevChar = getline('.')[col('.') - 2] # カーソルの前の文字
+  var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   # 以下の場合は閉じタグ補完を行わない
   # ・/>で閉じる場合
   # ・->と入力した場合
