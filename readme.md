@@ -18,7 +18,7 @@ inoremap ' ''<LEFT>
 上記補完をもっといい感じに発火するようにした+htmlの閉じタグ補完機能を実装したのがこのプラグインです。  
 全体的に大体VSCodeのような動きをイメージして実装しました。
 
-![image](https://user-images.githubusercontent.com/101523180/207132447-974aabd8-e67f-4e55-b0e2-0b4ed5e05a1c.gif)
+https://user-images.githubusercontent.com/101523180/207311455-5a2b63f4-6102-4607-b9f7-26e07552c7b8.mov
 
 ## 機能
 - 閉じ括弧の補完
