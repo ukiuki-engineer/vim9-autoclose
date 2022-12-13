@@ -51,6 +51,7 @@ Extensions(拡張子): *.html, *.js, *.blade.php, *.erb, *.vue
 
 上記以外のファイルで閉じタグ補完を有効化するには、vimrcに以下を追記すます
 ```vim:ex)
+" ex)
 let g:enabledAutoCloseTagFileTypes = ["vim", "php"] " FileType
 let g:enabledAutoCloseTagExtensions = ["vim", "php"] " extension
 ```
@@ -59,6 +60,7 @@ let g:enabledAutoCloseTagExtensions = ["vim", "php"] " extension
 vimrcに以下を追記します
 
 ```vim:ex)
+" ex)
 let g:disabledAutoCloseTagFileTypes = ["javascript", "php"] " FileType
 let g:disabledAutoCloseTagExtensions = ["js", "php"] " extension
 ```
