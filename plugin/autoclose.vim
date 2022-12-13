@@ -29,8 +29,6 @@ enddef
 # 閉じ括弧入力を止める
 def StopWriteCloseBracket(closeBracket: string): string
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
-  echo nextChar
-
   if nextChar == closeBracket
         return "\<RIGHT>"
   else
@@ -73,11 +71,15 @@ enddef
 # 要素内文字列から要素名を抜き出す
 def TrimElementName(strInTag: string): string
   var elementName = ""
+  var foundBra = 0 # <を見つけたフラグ
   for i in range(0, strlen(strInTag))
-    if strInTag[i] == " "
+    if strInTag[i] == "<"
+      foundBra = 1
+    endif
+    if foundBra == 1 && strInTag[i] == " "
       break
     endif
-    if strInTag[i] != "<"
+    if strInTag[i] != " " && strInTag[i] != "<"
       elementName = elementName .. strInTag[i]
     endif
   endfor
@@ -108,7 +110,6 @@ def FindElementName(ket: string): string
   endfor
   return ket
 enddef
-FindElementName(">")
 
 # 閉じタグを補完する
 def WriteCloseTag(ket: string): string
