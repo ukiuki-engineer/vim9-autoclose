@@ -1,3 +1,5 @@
+## <font color="Red">まだβ版です!!</font>
+
 ## 概要
 括弧、クォーテーション、タグを閉じる補完を良い感じに行うプラグイン。
 
@@ -39,3 +41,10 @@ mkdir -p ~/.vim/pack/plugins/start
 cd ~/.vim/pack/plugins/start
 git clone https://github.com/hagemanto-saitama/vim9-autoload
 ```
+
+## FIXME
+まだ色々直すところがあるので、↓の項目が一通り無くなるまで使わない方が良いかも...
+- [ ] 日本語の後だと、```()```と打つと```())```となってしまう
+- [ ] 括弧内でEnterを打つといい感じに改行されるようにする(VSCodeみたいな)
+- [ ] タグ補完を適用するFileTypeや拡張子をvimrcから設定できるようにする
+- [ ] gvimだとプラグインマネージャ経由でインストールできない

@@ -70,7 +70,7 @@ def TrimElementName(strInTag: string): string
   return elementName
 enddef
 
-# FIXME: カーソルより前の一番近い要素名を取得する関数(実装途中)
+# カーソルより前の一番近い要素名を取得する関数
 def FindElementName(ket: string): string
   # カーソル行を検索
   var strInTag = ""
@@ -95,9 +95,7 @@ def FindElementName(ket: string): string
   return ket
 enddef
 FindElementName(">")
-# FIXME: 閉じタグを補完する関数(実装途中)
-# <文字列>が入力されると</文字列>が入力される
-# TODO: 指定された拡張子の時のみ有効
+# 閉じタグを補完する関数
 def WriteCloseTag(ket: string): string
   var prevChar = getline('.')[col('.') - 2] # カーソルの前の文字
   # 以下の場合は閉じタグ補完を行わない
