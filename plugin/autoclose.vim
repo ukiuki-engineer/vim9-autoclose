@@ -2,7 +2,7 @@ vim9script
 # vim-autoclose
 # カッコ、クォーテーション、タグの補完
 
-# 閉じ括弧を補完する関数
+# 閉じ括弧を補完する
 def WriteCloseBracket(bracket: string): string
   var brackets = { # 括弧のオブジェクト
     "(": ")",
@@ -23,7 +23,7 @@ def WriteCloseBracket(bracket: string): string
   endif
 enddef
 
-# 閉じ括弧入力を止める関数
+# 閉じ括弧入力を止める
 def StopWriteCloseBracket(closeBracket: string): string
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
   echo nextChar
@@ -35,6 +35,16 @@ def StopWriteCloseBracket(closeBracket: string): string
   endif
 enddef
 
+# 括弧を改行するといい感じに
+def EnterBrackets(): string
+  var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
+  var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
+  if (prevChar == "(" && nextChar == ")") || (prevChar == "{" && nextChar == "}") || (prevChar == "[" && nextChar == "]")
+    return "\<CR>\<ESC>\<S-o>"
+  else
+    return "\<CR>"
+  endif
+enddef
 
 # クォーテーション補完
 def AutoCloseQuot(quot: string): string
@@ -57,9 +67,7 @@ def AutoCloseQuot(quot: string): string
   endif
 enddef
 
-# FIXME:Enter対応
-
-# 要素内文字列から要素名を抜き出す関数
+# 要素内文字列から要素名を抜き出す
 def TrimElementName(strInTag: string): string
   var elementName = ""
   for i in range(0, strlen(strInTag))
@@ -73,7 +81,7 @@ def TrimElementName(strInTag: string): string
   return elementName
 enddef
 
-# カーソルより前の一番近い要素名を取得する関数
+# カーソルより前の一番近い要素名を取得する
 def FindElementName(ket: string): string
   # カーソル行を検索
   var strInTag = ""
@@ -98,7 +106,8 @@ def FindElementName(ket: string): string
   return ket
 enddef
 FindElementName(">")
-# 閉じタグを補完する関数
+
+# 閉じタグを補完する
 def WriteCloseTag(ket: string): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   # 以下の場合は閉じタグ補完を行わない
@@ -117,7 +126,7 @@ def WriteCloseTag(ket: string): string
   return ket .. "</" .. elementName .. ket .. cursorTransition
 enddef
 
-# 閉じタグ補完を有効化するか判定して、有効化する関数
+# 閉じタグ補完を有効化するか判定して、有効化する
 def EnableAutoCloseTag()
   if enabledAutoCloseTagFileTypes->count(&filetype) >= 1 || enabledAutoCloseTagExtensions->count(expand("%:e")) >= 1
     inoremap <expr> > WriteCloseTag(">")
@@ -132,6 +141,8 @@ inoremap <expr> [ WriteCloseBracket("[")
 inoremap <expr> ) StopWriteCloseBracket(")")
 inoremap <expr> } StopWriteCloseBracket("}")
 inoremap <expr> ] StopWriteCloseBracket("]")
+# Enter入力
+inoremap <expr> <CR> EnterBrackets()
 # クォーテーション入力
 inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
