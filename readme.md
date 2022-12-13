@@ -42,9 +42,30 @@ cd ~/.vim/pack/plugins/start
 git clone https://github.com/hagemanto-saitama/vim9-autoload
 ```
 
+## タグ補完を有効にするFileType、拡張子を追加する方法
+閉じタグ補完はデフォルトでは以下のファイルに対応しています。
+```
+FileTypes: html, javascript, blade, vue
+Extensions(拡張子): *.html, *.js, *.blade.php, *.erb, *.vue
+```
+
+上記以外のファイルで閉じタグ補完を有効化するには、vimrcに以下を追記すます
+```vim:ex)
+let g:enabledAutoCloseTagFileTypes = ["vim", "php"] " FileType
+let g:enabledAutoCloseTagExtensions = ["vim", "php"] " extension
+```
+
+## 特定のFileType、拡張子の閉じタグ補完を無効化する方法
+vimrcに以下を追記します
+
+```vim:ex)
+let g:disabledAutoCloseTagFileTypes = ["javascript", "php"] " FileType
+let g:disabledAutoCloseTagExtensions = ["js", "php"] " extension
+```
+
+
 ## FIXME
 まだ色々直すところがあるので、↓の項目が一通り無くなるまで使わない方が良いかも...
 - [ ] 日本語の後だと、```()```と打つと```())```となってしまう
 - [ ] 括弧内でEnterを打つといい感じに改行されるようにする(VSCodeみたいな)
-- [ ] タグ補完を適用するFileTypeや拡張子をvimrcから設定できるようにする
 - [ ] gvimだとプラグインマネージャ経由でインストールできない

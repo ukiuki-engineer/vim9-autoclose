@@ -114,10 +114,13 @@ def WriteCloseTag(ket: string): string
   return ket .. "</" .. elementName .. ket .. cursorTransition
 enddef
 
+# 閉じタグ補完を有効化するか判定して、有効化する関数
+def EnableAutoCloseTag()
+  if enabledAutoCloseTagFileTypes->count(&filetype) >= 1 || enabledAutoCloseTagExtensions->count(expand("%:e")) >= 1
+    inoremap <expr> > WriteCloseTag(">")
+  endif
+enddef
 
-# memo:
-# <expr>を付けないと、WriteCloseBracket("(")
-# という文字列がそのまま出力されてしまう
 # 括弧入力
 inoremap <expr> ( WriteCloseBracket("(")
 inoremap <expr> { WriteCloseBracket("{")
@@ -130,15 +133,21 @@ inoremap <expr> ] StopWriteCloseBracket("]")
 inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
+
 # タグ入力
-# FIXME: vimrcでファイルタイプを追加できるようにする
-au FileType html inoremap <expr> > WriteCloseTag(">")
-au FileType javascript inoremap <expr> > WriteCloseTag(">")
-au FileType blade inoremap <expr> > WriteCloseTag(">")
-au FileType vue inoremap <expr> > WriteCloseTag(">")
-au FileType erb inoremap <expr> > WriteCloseTag(">")
-au BufEnter *.html inoremap <expr> > WriteCloseTag(">")
-au BufEnter *.javascript inoremap <expr> > WriteCloseTag(">")
-au BufEnter *.blade.php inoremap <expr> > WriteCloseTag(">")
-au BufEnter *.erb inoremap <expr> > WriteCloseTag(">")
-au BufEnter *.vue inoremap <expr> > WriteCloseTag(">")
+var enabledAutoCloseTagFileTypes = ["html", "javascript", "blade", "vue"]
+var enabledAutoCloseTagExtensions = ["html", "js", "blade.php", "erb", "vue"]
+if exists('g:enabledAutoCloseTagFileTypes')
+  enabledAutoCloseTagFileTypes = enabledAutoCloseTagFileTypes + g:enabledAutoCloseTagFileTypes
+endif
+if exists('g:enabledAutoCloseTagExtensions')
+  enabledAutoCloseTagExtensions = enabledAutoCloseTagExtensions + g:enabledAutoCloseTagExtensions
+endif
+
+au FileType * EnableAutoCloseTag()
+au BufEnter * EnableAutoCloseTag()
+
+# 閉じタグ補完の解除
+if exists('g:disabledAutoCloseTagFileTypes') || exists('g:disabledAutoCloseTagFileTypes')
+  iunmap >
+endif
