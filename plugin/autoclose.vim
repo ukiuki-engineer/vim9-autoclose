@@ -124,7 +124,11 @@ def WriteCloseTag(ket: string): string
   for i in range(1, strlen(elementName) + 3)
     cursorTransition = cursorTransition .. "\<LEFT>" # カーソルをタグと閉じタグの中央に移動
   endfor
-  return ket .. "</" .. elementName .. ket .. cursorTransition
+  if elementName == ""
+    return ket
+  else
+    return ket .. "</" .. elementName .. ket .. cursorTransition
+  endif
 enddef
 
 # 閉じタグ補完を有効化するか判定して、有効化する
