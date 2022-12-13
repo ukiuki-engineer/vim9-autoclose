@@ -69,17 +69,14 @@ def AutoCloseQuot(quot: string): string
 enddef
 
 # 要素内文字列から要素名を抜き出す
-def TrimElementName(strInTag: string): string
+def TrimElementName(lnum: number, strInTag: string): string
   var elementName = ""
-  var foundBra = 0 # <を見つけたフラグ
-  for i in range(0, strlen(strInTag))
-    if strInTag[i] == "<"
-      foundBra = 1
-    endif
-    if foundBra == 1 && strInTag[i] == " "
+  var indent = indent(lnum)
+  for i in range(indent, strlen(strInTag))
+    if strInTag[i] == " "
       break
     endif
-    if strInTag[i] != " " && strInTag[i] != "<"
+    if strInTag[i] != "<"
       elementName = elementName .. strInTag[i]
     endif
   endfor
@@ -98,14 +95,14 @@ def FindElementName(ket: string): string
     endif
   endfor
   if "<" == matchstr(strInTag, "<")
-    return TrimElementName(strInTag)
+    return TrimElementName(line('.'), strInTag)
   endif
   # カーソルより上の行を検索
   var strOnLine = ""
   for i in range(1, line('.') - 1)
     strOnLine = getline(line('.') - i)
     if "<" == matchstr(strOnLine, "<")
-      return TrimElementName(strOnLine)
+      return TrimElementName(line('.') - i, strOnLine)
     endif
   endfor
   return ket
