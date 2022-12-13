@@ -11,12 +11,15 @@ def WriteCloseBracket(bracket: string): string
   }
   var nextChar = getline('.')[col('.') - 1] # カーソルの次の文字
 
-  if nextChar == "" || # カーソルの後ろの文字が、なにもないとき（行末のとき）
-    nextChar == brackets[bracket] || # カーソルの後ろの文字が、閉じ括弧のとき
-    nextChar == "" # カーソルの後ろの文字が、空白のとき（半角スペースのとき）
-    return bracket .. brackets[bracket] .. "\<LEFT>"
+  # 以下の場合に括弧補完する
+  # ・カーソルの次の文字が、なにもないとき（行末のとき）
+  # ・カーソルの次の文字が、閉じ括弧のとき
+  # ・カーソルの次の次の文字が他の閉じ括弧
+  # ・カーソルの次の文字が、空白のとき（半角スペースのとき）
+  if nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " "
+    return bracket .. brackets[bracket] .. "\<LEFT>" # 括弧補完
   else
-    return bracket
+    return bracket # 括弧補完しない
   endif
 enddef
 
