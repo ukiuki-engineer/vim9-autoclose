@@ -19,6 +19,8 @@ inoremap ' ''<LEFT>
 全体的に大体VSCodeのような動きをイメージして実装しました。
 
 https://user-images.githubusercontent.com/101523180/207311455-5a2b63f4-6102-4607-b9f7-26e07552c7b8.mov
+https://user-images.githubusercontent.com/101523180/207350557-5c52c90d-a058-45f1-b226-2dded5c428a4.mov
+
 
 ## 機能
 - 閉じ括弧の補完
