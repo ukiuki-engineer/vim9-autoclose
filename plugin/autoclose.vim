@@ -9,6 +9,7 @@ def WriteCloseBracket(bracket: string): string
     "{": "}",
     "[": "]"
   }
+  var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
 
   # 以下の場合に括弧補完する
@@ -16,7 +17,9 @@ def WriteCloseBracket(bracket: string): string
   # ・カーソルの次の文字が、閉じ括弧のとき
   # ・カーソルの次の次の文字が他の閉じ括弧
   # ・カーソルの次の文字が、空白のとき（半角スペースのとき）
-  if nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " "
+  # ・カーソルの次の文字が<のとき
+  # ・カーソルの前の文字が>のとき
+  if nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " " || prevChar == ">" || nextChar == "<"
     return bracket .. brackets[bracket] .. "\<LEFT>" # 括弧補完
   else
     return bracket # 括弧補完しない
