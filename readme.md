@@ -74,4 +74,4 @@ let g:disabledAutoCloseTagExtensions = ["js", "php"] " extension
 
 ## 要望等
 対応可能なものであれば対応します。(twitter->@YUKI75191105)  
-例えば、vim9未満に対応して欲しいなど。
+例えば、vim9未満にも対応して欲しいなど。
