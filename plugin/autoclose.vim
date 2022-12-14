@@ -52,16 +52,21 @@ def AutoCloseQuot(quot: string): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
 
-  if (prevChar == quot && nextChar == quot) # カーソルの左右にクォーテンションがある場合
+  if (prevChar == quot && nextChar == quot) # カーソルの左右にクォーテンションがある場合は何も入力せずにカーソルを移動
     return "\<RIGHT>"
-  elseif prevChar =~ "\a" || # カーソルの前の文字がアルファベット
-    prevChar =~ "\d" || # カーソルの前の文字が数字
-    prevChar =~ "[^\x01-\x7E]" || # カーソルの前の文字が全角
-    prevChar == quot # カーソルの前の文字がクォーテーション
+  # 以下の場合はクォーテーション補完を行わない
+  # ・カーソルの前の文字がアルファベット
+  # ・カーソルの前の文字が数字
+  # ・カーソルの前の文字が全角
+  # ・カーソルの前の文字がクォーテーション
+  elseif prevChar =~ "\a" || prevChar =~ "\d" || prevChar =~ "[^\x01-\x7E]" || prevChar == quot 
     return quot
-  elseif nextChar == "" || # カーソルの後ろの文字が空(行末)
-    nextChar == ")" || nextChar == "}" || nextChar == "]" || # カーソルの後ろの文字が閉じ括弧
-    nextChar == " " # カーソルの後ろの文字が空白(半角スペース)
+  # 以下の場合にクォーテーション補完を行う
+  # ・カーソルの後ろの文字が空(行末)
+  # ・カーソルの後ろの文字が閉じ括弧
+  # ・カーソルの後ろの文字が空白(半角スペース)
+  # ・カーソルの後ろの文字が>
+  elseif nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " " || nextChar == ">"
     return quot .. quot .. "\<LEFT>"
   else
     return quot
@@ -120,11 +125,12 @@ def WriteCloseTag(ket: string): string
   # ・/>で閉じる場合
   # ・->と入力した場合
   # ・=>と入力した場合
-  if prevChar == "/" || prevChar == "-" || prevChar == "="
+  # <br>タグ
+  var elementName = FindElementName(ket)
+  if prevChar == "/" || prevChar == "-" || prevChar == "=" || elementName == "br"
     return ket
   endif
 
-  var elementName = FindElementName(ket)
   var cursorTransition = ""
   for i in range(1, strlen(elementName) + 3)
     cursorTransition = cursorTransition .. "\<LEFT>" # カーソルをタグと閉じタグの中央に移動
