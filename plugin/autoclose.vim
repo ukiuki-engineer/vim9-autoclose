@@ -69,10 +69,15 @@ def AutoCloseQuot(quot: string): string
 enddef
 
 # 要素内文字列から要素名を抜き出す
-def TrimElementName(lnum: number, strInTag: string): string
+def TrimElementName(strLineNum: number, strInTag: string): string
   var elementName = ""
-  var indent = indent(lnum)
-  for i in range(indent, strlen(strInTag))
+  var startRange = 1
+  # カーソル行とタグがある行が違う場合、
+  # インデントが含まれているので要素名抜き出しのスタート位置をずらす
+  if strLineNum != line('.')
+    startRange = indent(strLineNum) + 1
+  endif
+  for i in range(startRange, strlen(strInTag))
     if strInTag[i] == " "
       break
     endif
