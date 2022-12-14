@@ -1,5 +1,3 @@
-## <font color="Red">まだβ版です!!</font>
-
 ## 概要
 括弧、クォーテーション、タグを閉じる補完を良い感じに行うプラグイン。
 
@@ -72,11 +70,6 @@ vimrcに以下を追記します
 let g:disabledAutoCloseTagFileTypes = ["javascript", "php"] " FileType
 let g:disabledAutoCloseTagExtensions = ["js", "php"] " extension
 ```
-
-## FIXME
-まだ色々直すところがあるので、↓の項目が一通り無くなるまで使わない方が良いかも...
-- [ ] gvimだとプラグインマネージャ経由でインストールできない(手動なら入る)
-- [ ] 改行ありのタグだと、閉じタグ補完はできるがインデントがなんかおかしくなる
 
 ## 要望等
 対応可能なものであれば対応します。(twitter->@YUKI75191105)  
