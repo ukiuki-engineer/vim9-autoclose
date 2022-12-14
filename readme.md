@@ -28,6 +28,11 @@ https://user-images.githubusercontent.com/101523180/207350557-5c52c90d-a058-45f1
 - 括弧を改行したときにいい感じにしてくれる
 - 閉じクォーテーションの補完
 - 閉じタグの補完
+- 補完をいい感じに制御
+→補完してほしくない時は無効になるようにいい感じに制御してある。
+例えば以下ように制御してある。
+  - ```()```と入力しても```())```とならないように
+  - ```<br>```は閉じタグを補完しない
 
 ## インストール方法
 ※vim9scriptで実装しているため、vim9以上のみ対応しています。
@@ -67,7 +72,6 @@ vimrcに以下を追記します
 let g:disabledAutoCloseTagFileTypes = ["javascript", "php"] " FileType
 let g:disabledAutoCloseTagExtensions = ["js", "php"] " extension
 ```
-
 
 ## FIXME
 まだ色々直すところがあるので、↓の項目が一通り無くなるまで使わない方が良いかも...
