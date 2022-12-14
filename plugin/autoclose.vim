@@ -13,13 +13,15 @@ def WriteCloseBracket(bracket: string): string
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
 
   # 以下の場合に括弧補完する
-  # ・カーソルの次の文字が、なにもないとき（行末のとき）
-  # ・カーソルの次の文字が、閉じ括弧のとき
+  # ・カーソルの次の文字が、なにもない時（行末の時）
+  # ・カーソルの次の文字が、閉じ括弧の時
   # ・カーソルの次の次の文字が他の閉じ括弧
-  # ・カーソルの次の文字が、空白のとき（半角スペースのとき）
-  # ・カーソルの次の文字が<のとき
-  # ・カーソルの前の文字が>のとき
-  if nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " " || prevChar == ">" || nextChar == "<"
+  # ・カーソルの次の文字が、空白の時（半角スペースの時）
+  # ・カーソルの次の文字が<の時
+  # ・カーソルの前の文字が>の時
+  # ・カーソルの両隣がクォーテーションの時
+  if nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " " || prevChar == ">" || nextChar == "<" ||
+    (prevChar == "\'" && nextChar == "\'") || ( prevChar == "\"" && nextChar == "\"") || (prevChar == "`" && nextChar == "`")
     return bracket .. brackets[bracket] .. "\<LEFT>" # 括弧補完
   else
     return bracket # 括弧補完しない
