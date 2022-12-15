@@ -1,5 +1,5 @@
 vim9script
-# vim-autoclose
+# vim9-autoclose
 # カッコ、クォーテーション、タグの補完
 
 # 閉じ括弧を補完する
