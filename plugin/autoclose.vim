@@ -2,14 +2,25 @@ vim9script
 # vim9-autoclose
 # カッコ、クォーテーション、タグの補完
 
-# 括弧を渡すと閉じ括弧を返す
-def BracketToCloseBracket(bracket: string): string
-  var closeBrackets = {
+# 対の括弧を返す
+def ReverseBracket(bracket: string): string
+  var startBracket = { # 括弧
+    ")": "(",
+    "}": "{",
+    "]": "["
+  }
+  var closeBracket = { # 閉じ括弧
     "(": ")",
     "{": "}",
     "[": "]"
   }
-  return closeBrackets[bracket]
+  if startBracket->count(bracket) == 1     # 括弧が渡されたら閉じ括弧を返す
+    return closeBracket[bracket]
+  elseif closeBracket->count(bracket) == 1 # 閉じ括弧が渡されたら括弧を返す
+    return startBracket[bracket]
+  else
+    return ""
+  endif
 enddef
 
 # 閉じ括弧を補完する
@@ -25,14 +36,16 @@ def WriteCloseBracket(bracket: string): string
   if nextChar =~ '\a' || nextChar =~ '\d' || nextChar =~ '[^\x01-\x7E]'
     return bracket # 括弧補完しない
   else
-    return bracket .. BracketToCloseBracket(bracket) .. "\<LEFT>" # 括弧補完
+    return bracket .. ReverseBracket(bracket) .. "\<LEFT>" # 括弧補完
   endif
 enddef
 
 # 閉じ括弧入力時の挙動
 def NotDoubleCloseBracket(closeBracket: string): string
+  var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
-  if nextChar == closeBracket
+  # ()と入力した場合())とせずに()で止める
+  if nextChar == closeBracket && prevChar == ReverseBracket(closeBracket)
     return "\<RIGHT>"
   else
     return closeBracket
@@ -167,19 +180,21 @@ inoremap <expr> " AutoCloseQuot("\"")
 inoremap <expr> ` AutoCloseQuot("\`")
 
 # タグ入力
+# 適用するFileType
 var enabledAutoCloseTagFileTypes = ["html", "javascript", "blade", "vue"]
+# 適用する拡張子
 var enabledAutoCloseTagExtensions = ["html", "js", "blade.php", "erb", "vue"]
-if exists('g:enabledAutoCloseTagFileTypes')
+if exists('g:enabledAutoCloseTagFileTypes') # vimrcの設定を反映
   enabledAutoCloseTagFileTypes = enabledAutoCloseTagFileTypes + g:enabledAutoCloseTagFileTypes
 endif
-if exists('g:enabledAutoCloseTagExtensions')
+if exists('g:enabledAutoCloseTagExtensions') # vimrcの設定を反映
   enabledAutoCloseTagExtensions = enabledAutoCloseTagExtensions + g:enabledAutoCloseTagExtensions
 endif
 
 au FileType * EnableAutoCloseTag()
 au BufEnter * EnableAutoCloseTag()
 
-# 閉じタグ補完の解除
+# vimrcで設定したFileType、拡張子のファイルに対して閉じタグ補完の解除
 if exists('g:disabledAutoCloseTagFileTypes') || exists('g:disabledAutoCloseTagFileTypes')
   iunmap >
 endif
