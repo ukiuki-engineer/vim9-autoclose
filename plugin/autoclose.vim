@@ -17,7 +17,7 @@ def WriteCloseBracket(bracket: string): string
   # ・カーソルの次の文字が、以下のavailableNextCharsに含まれている時
   # ・カーソルの前の文字が>の時
   # ・カーソルの両隣がクォーテーションの時
-  var availableNextChars = ["", " ", ")", "}", "]", ">", ":", ";"]
+  var availableNextChars = ["", " ", ")", "}", "]", ">", ":", ";", "\'", "\"", "\`"]
   if availableNextChars->count(nextChar) == 1 || prevChar == ">" ||
     (prevChar == "\'" && nextChar == "\'") || ( prevChar == "\"" && nextChar == "\"") || (prevChar == "`" && nextChar == "`")
     return bracket .. brackets[bracket] .. "\<LEFT>" # 括弧補完
