@@ -3,6 +3,7 @@ vim9script
 # カッコ、クォーテーション、タグの補完
 
 # 閉じ括弧を補完する
+# FIXME; 補完した操作を、.で繰り返すことができない
 def WriteCloseBracket(bracket: string): string
   var brackets = { # 括弧のオブジェクト
     "(": ")",
@@ -13,17 +14,11 @@ def WriteCloseBracket(bracket: string): string
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
 
   # 以下の場合に括弧補完する
-  # FIXME: 記号のパターン一致で統一できるものは統一する
-  # ・カーソルの次の文字が、なにもない時（行末の時）
-  # ・カーソルの次の文字が、閉じ括弧の時
-  # ・カーソルの次の次の文字が他の閉じ括弧
-  # ・カーソルの次の文字が、空白の時（半角スペースの時）
-  # ・カーソルの次の文字が<の時
-  # ・カーソルの次の文字が;の時
+  # ・カーソルの次の文字が、以下のavailableNextCharsに含まれている時
   # ・カーソルの前の文字が>の時
   # ・カーソルの両隣がクォーテーションの時
-  if nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " " ||
-    prevChar == ">" || nextChar == "<" || nextChar == ";" ||
+  var availableNextChars = ["", " ", ")", "}", "]", ">", ":", ";"]
+  if availableNextChars->count(nextChar) == 1 || prevChar == ">" ||
     (prevChar == "\'" && nextChar == "\'") || ( prevChar == "\"" && nextChar == "\"") || (prevChar == "`" && nextChar == "`")
     return bracket .. brackets[bracket] .. "\<LEFT>" # 括弧補完
   else
@@ -56,6 +51,8 @@ enddef
 def AutoCloseQuot(quot: string): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
+  # カーソルの次の文字が以下に含まれている場合にクォーテーション補完を有効にする
+  var availableNextChars = ["", " ", ")", "}", "]", ">"]
 
   if (prevChar == quot && nextChar == quot) # カーソルの左右にクォーテンションがある場合は何も入力せずにカーソルを移動
     return "\<RIGHT>"
@@ -64,14 +61,11 @@ def AutoCloseQuot(quot: string): string
   # ・カーソルの前の文字が数字
   # ・カーソルの前の文字が全角
   # ・カーソルの前の文字がクォーテーション
-  elseif prevChar =~ "\a" || prevChar =~ "\d" || prevChar =~ "[^\x01-\x7E]" || prevChar == quot 
+  elseif prevChar =~ "\a" || prevChar =~ "\d" || prevChar =~ "[^\x01-\x7E]" || prevChar == quot
     return quot
-  # 以下の場合にクォーテーション補完を行う
-  # ・カーソルの後ろの文字が空(行末)
-  # ・カーソルの後ろの文字が閉じ括弧
-  # ・カーソルの後ろの文字が空白(半角スペース)
-  # ・カーソルの後ろの文字が>
-  elseif nextChar == "" || nextChar == ")" || nextChar == "}" || nextChar == "]" || nextChar == " " || nextChar == ">"
+  # カーソルの次の文字が上記のavailableNextCharsに含まれている場合、クォーテー
+  # ション補完する
+  elseif availableNextChars->count(nextChar) == 1
     return quot .. quot .. "\<LEFT>"
   else
     return quot
