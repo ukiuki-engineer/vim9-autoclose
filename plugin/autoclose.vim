@@ -2,42 +2,45 @@ vim9script
 # vim9-autoclose
 # カッコ、クォーテーション、タグの補完
 
-# 閉じ括弧を補完する
-# FIXME; 補完した操作を、.で繰り返すことができない
-def WriteCloseBracket(bracket: string): string
-  var brackets = { # 括弧のオブジェクト
+# 括弧を渡すと閉じ括弧を返す
+def BracketToCloseBracket(bracket: string): string
+  var closeBrackets = {
     "(": ")",
     "{": "}",
     "[": "]"
   }
+  return closeBrackets[bracket]
+enddef
+
+# 閉じ括弧を補完する
+# FIXME: 補完した操作を、.で繰り返すことができない
+def WriteCloseBracket(bracket: string): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
 
-  # 以下の場合に括弧補完する
-  # ・カーソルの次の文字が、以下のavailableNextCharsに含まれている時
-  # ・カーソルの前の文字が>の時
-  # ・カーソルの両隣がクォーテーションの時
-  var availableNextChars = ["", " ", ")", "}", "]", ">", ":", ";", "\'", "\"", "\`"]
-  if availableNextChars->count(nextChar) == 1 || prevChar == ">" ||
-    (prevChar == "\'" && nextChar == "\'") || ( prevChar == "\"" && nextChar == "\"") || (prevChar == "`" && nextChar == "`")
-    return bracket .. brackets[bracket] .. "\<LEFT>" # 括弧補完
-  else
+  # 以下の場合は閉じ括弧を補完しない
+  # ・カーソルの次の文字がアルファベット
+  # ・カーソルの次の文字が数字
+  # ・カーソルの次の文字が全角
+  if nextChar =~ '\a' || nextChar =~ '\d' || nextChar =~ '[^\x01-\x7E]'
     return bracket # 括弧補完しない
+  else
+    return bracket .. BracketToCloseBracket(bracket) .. "\<LEFT>" # 括弧補完
   endif
 enddef
 
-# 閉じ括弧入力を止める
-def StopWriteCloseBracket(closeBracket: string): string
+# 閉じ括弧入力時の挙動
+def NotDoubleCloseBracket(closeBracket: string): string
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
   if nextChar == closeBracket
-        return "\<RIGHT>"
+    return "\<RIGHT>"
   else
     return closeBracket
   endif
 enddef
 
 # 括弧を改行するといい感じに
-def EnterBrackets(): string
+def EntercloseBracket(): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
   if (prevChar == "(" && nextChar == ")") || (prevChar == "{" && nextChar == "}") || (prevChar == "[" && nextChar == "]")
@@ -153,11 +156,11 @@ inoremap <expr> ( WriteCloseBracket("(")
 inoremap <expr> { WriteCloseBracket("{")
 inoremap <expr> [ WriteCloseBracket("[")
 # 閉じ括弧入力
-inoremap <expr> ) StopWriteCloseBracket(")")
-inoremap <expr> } StopWriteCloseBracket("}")
-inoremap <expr> ] StopWriteCloseBracket("]")
+inoremap <expr> ) NotDoubleCloseBracket(")")
+inoremap <expr> } NotDoubleCloseBracket("}")
+inoremap <expr> ] NotDoubleCloseBracket("]")
 # Enter入力
-inoremap <expr> <CR> EnterBrackets()
+inoremap <expr> <CR> EntercloseBracket()
 # クォーテーション入力
 inoremap <expr> ' AutoCloseQuot("\'")
 inoremap <expr> " AutoCloseQuot("\"")
