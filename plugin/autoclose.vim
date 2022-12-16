@@ -136,13 +136,15 @@ enddef
 # 閉じタグを補完する
 def WriteCloseTag(ket: string): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
+  var voidElements = ["br", "hr", "img", "input", "link", "meta"]
   # 以下の場合は閉じタグ補完を行わない
   # ・/>で閉じる場合
   # ・->と入力した場合
   # ・=>と入力した場合
-  # <br>タグ
+  # ・上記のvoidElementsに含まれる要素
+
   var elementName = FindElementName(ket)
-  if prevChar == "/" || prevChar == "-" || prevChar == "=" || elementName == "br"
+  if prevChar == "/" || prevChar == "-" || prevChar == "=" || voidElements->count(elementName) == 1
     return ket
   endif
 
