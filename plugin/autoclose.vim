@@ -200,4 +200,5 @@ augroup END
 # vimrcで設定したFileType、拡張子のファイルに対して閉じタグ補完の解除
 if exists('g:disabledAutoCloseTagFileTypes') || exists('g:disabledAutoCloseTagFileTypes')
   iunmap >
+  iunmap </
 endif
