@@ -38,15 +38,15 @@ https://user-images.githubusercontent.com/101523180/207350557-5c52c90d-a058-45f1
 #### プラグインマネージャ経由
 以下を.vimrcに記述する
 ```
-Plug 'hagemanto-saitama/vim9-autoload' # vim-plugの場合
-NeoBundle 'hagemanto-saimata/vim9-autoload' # NeoBundleの場合
+Plug 'ukiuki-engineer/vim9-autoload' # vim-plugの場合
+NeoBundle 'ukiuki-engineer/vim9-autoload' # NeoBundleの場合
 ```
 #### 手動
 ```.vim/pack/plugins/start```というディレクトリを作成し、そこにこのプラグインを配置する
 ```
 mkdir -p ~/.vim/pack/plugins/start
 cd ~/.vim/pack/plugins/start
-git clone https://github.com/hagemanto-saitama/vim9-autoload
+git clone https://github.com/ukiuki-engineer/vim9-autoload
 ```
 
 ## タグ補完を有効にするFileType、拡張子を追加する方法
