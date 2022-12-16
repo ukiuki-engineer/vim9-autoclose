@@ -143,13 +143,9 @@ def WriteCloseTag(ket: string): string
   # ・=>と入力した場合
   # ・上記のvoidElementsに含まれる要素
   # elementNameに/が含まれる場合
-
+  # elementNameが空白の場合
   var elementName = FindElementName(ket)
-  if prevChar == "/" || prevChar == "-" || prevChar == "=" || voidElements->count(elementName) == 1 || elementName =~ "/"
-    return ket
-  endif
-
-  if elementName == ""
+  if prevChar == "/" || prevChar == "-" || prevChar == "=" || voidElements->count(elementName) == 1 || elementName =~ "/" || elementName == ""
     return ket
   else
     return ket .. "</" .. elementName .. ket .. "\<ESC>F<i"
@@ -158,7 +154,7 @@ enddef
 
 # 閉じタグ補完を有効化するか判定して、有効化する
 def EnableAutoCloseTag()
-  if enabledAutoCloseTagFileTypes->count(&filetype) >= 1 || enabledAutoCloseTagExtensions->count(expand("%:e")) >= 1
+  if enabledAutoCloseTagFileTypes->count(&filetype) == 1 || enabledAutoCloseTagExtensions->count(expand("%:e")) == 1
     inoremap <expr> > WriteCloseTag(">")
     inoremap </ </<C-x><C-o><ESC>F<i
   endif
