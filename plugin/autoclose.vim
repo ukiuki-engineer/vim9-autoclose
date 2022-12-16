@@ -68,7 +68,7 @@ def AutoCloseQuot(quot: string): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
   # カーソルの次の文字が以下に含まれている場合にクォーテーション補完を有効にする
-  var availableNextChars = ["", " ", ")", "}", "]", ">"]
+  var availableNextChars = ["", " ", ",", ")", "}", "]", ">"]
 
   if (prevChar == quot && nextChar == quot) # カーソルの左右にクォーテンションがある場合は何も入力せずにカーソルを移動
     return "\<RIGHT>"
@@ -146,14 +146,10 @@ def WriteCloseTag(ket: string): string
     return ket
   endif
 
-  var cursorTransition = ""
-  for i in range(1, strlen(elementName) + 3)
-    cursorTransition = cursorTransition .. "\<LEFT>" # カーソルをタグと閉じタグの中央に移動
-  endfor
   if elementName == ""
     return ket
   else
-    return ket .. "</" .. elementName .. ket .. cursorTransition
+    return ket .. "</" .. elementName .. ket .. "\<ESC>F<i"
   endif
 enddef
 
@@ -181,9 +177,9 @@ inoremap <expr> ` AutoCloseQuot("\`")
 
 # タグ入力
 # 適用するFileType
-var enabledAutoCloseTagFileTypes = ["html", "javascript", "blade", "vue"]
+var enabledAutoCloseTagFileTypes = ["html", "xml", "markdown", "javascript", "blade", "eruby", "vue"]
 # 適用する拡張子
-var enabledAutoCloseTagExtensions = ["html", "js", "blade.php", "erb", "vue"]
+var enabledAutoCloseTagExtensions = ["html", "xml", "md", "js", "blade.php", "erb", "vue"]
 if exists('g:enabledAutoCloseTagFileTypes') # vimrcの設定を反映
   enabledAutoCloseTagFileTypes = enabledAutoCloseTagFileTypes + g:enabledAutoCloseTagFileTypes
 endif
@@ -191,8 +187,11 @@ if exists('g:enabledAutoCloseTagExtensions') # vimrcの設定を反映
   enabledAutoCloseTagExtensions = enabledAutoCloseTagExtensions + g:enabledAutoCloseTagExtensions
 endif
 
-au FileType * EnableAutoCloseTag()
-au BufEnter * EnableAutoCloseTag()
+augroup AutoCloseTag
+  au!
+  au FileType * EnableAutoCloseTag()
+  au BufEnter * EnableAutoCloseTag()
+augroup END
 
 # vimrcで設定したFileType、拡張子のファイルに対して閉じタグ補完の解除
 if exists('g:disabledAutoCloseTagFileTypes') || exists('g:disabledAutoCloseTagFileTypes')
