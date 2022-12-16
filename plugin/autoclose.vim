@@ -68,7 +68,7 @@ def AutoCloseQuot(quot: string): string
   var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
   var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
   # カーソルの次の文字が以下に含まれている場合にクォーテーション補完を有効にする
-  var availableNextChars = ["", " ", ",", ")", "}", "]", ">"]
+  var availableNextChars = ["", " ", ",", "$", ")", "}", "]", ">"]
 
   if (prevChar == quot && nextChar == quot) # カーソルの左右にクォーテンションがある場合は何も入力せずにカーソルを移動
     return "\<RIGHT>"
