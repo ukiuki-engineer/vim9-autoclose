@@ -142,9 +142,10 @@ def WriteCloseTag(ket: string): string
   # ・->と入力した場合
   # ・=>と入力した場合
   # ・上記のvoidElementsに含まれる要素
+  # elementNameに/が含まれる場合
 
   var elementName = FindElementName(ket)
-  if prevChar == "/" || prevChar == "-" || prevChar == "=" || voidElements->count(elementName) == 1
+  if prevChar == "/" || prevChar == "-" || prevChar == "=" || voidElements->count(elementName) == 1 || elementName =~ "/"
     return ket
   endif
 
@@ -159,6 +160,7 @@ enddef
 def EnableAutoCloseTag()
   if enabledAutoCloseTagFileTypes->count(&filetype) >= 1 || enabledAutoCloseTagExtensions->count(expand("%:e")) >= 1
     inoremap <expr> > WriteCloseTag(">")
+    inoremap </ </<C-x><C-o><ESC>F<i
   endif
 enddef
 
