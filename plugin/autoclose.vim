@@ -177,9 +177,9 @@ inoremap <expr> ` AutoCloseQuot("\`")
 
 # タグ入力
 # 適用するFileType
-var enabledAutoCloseTagFileTypes = ["html", "xml", "markdown", "javascript", "blade", "eruby", "vue"]
+var enabledAutoCloseTagFileTypes = ["html", "xml", "javascript", "blade", "eruby", "vue"]
 # 適用する拡張子
-var enabledAutoCloseTagExtensions = ["html", "xml", "md", "js", "blade.php", "erb", "vue"]
+var enabledAutoCloseTagExtensions = ["html", "xml", "js", "blade.php", "erb", "vue"]
 if exists('g:enabledAutoCloseTagFileTypes') # vimrcの設定を反映
   enabledAutoCloseTagFileTypes = enabledAutoCloseTagFileTypes + g:enabledAutoCloseTagFileTypes
 endif
