@@ -8,12 +8,16 @@ import "../autoload/autoclose.vim"
 inoremap <expr> ( autoclose.WriteCloseBracket("(")
 inoremap <expr> { autoclose.WriteCloseBracket("{")
 inoremap <expr> [ autoclose.WriteCloseBracket("[")
+
 # 閉じ括弧入力
 inoremap <expr> ) autoclose.NotDoubleCloseBracket(")")
 inoremap <expr> } autoclose.NotDoubleCloseBracket("}")
 inoremap <expr> ] autoclose.NotDoubleCloseBracket("]")
+
 # Enter入力
-inoremap <expr> <CR> autoclose.EntercloseBracket()
+# memo: いらない気がするので一旦コメントアウト
+# inoremap <expr> <CR> autoclose.EntercloseBracket()
+
 # クォーテーション入力
 inoremap <expr> ' autoclose.AutoCloseQuot("\'")
 inoremap <expr> " autoclose.AutoCloseQuot("\"")
@@ -29,6 +33,8 @@ augroup AutoCloseTag
   au BufEnter * autoclose.EnableAutoCloseTag()
 augroup END
 
+# FIXME: iunmapで解除ではなく、配列からファイルを除く処理をReflectVimrc()に追
+# 加する
 # vimrcで設定したFileType、拡張子のファイルに対して閉じタグ補完の解除
 if exists('g:disabledAutoCloseTagFileTypes') || exists('g:disabledAutoCloseTagFileTypes')
   iunmap >

@@ -51,15 +51,16 @@ export def NotDoubleCloseBracket(closeBracket: string): string
 enddef
 
 # 括弧を改行するといい感じに
-export def EntercloseBracket(): string
-  var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
-  var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
-  if (prevChar == "(" && nextChar == ")") || (prevChar == "{" && nextChar == "}") || (prevChar == "[" && nextChar == "]")
-    return "\<CR>\<ESC>\<S-o>"
-  else
-    return "\<CR>"
-  endif
-enddef
+# memo: いらない気がするので一旦コメントアウト
+# export def EntercloseBracket(): string
+  # var prevChar = getline('.')[charcol('.') - 2] # カーソルの前の文字
+  # var nextChar = getline('.')[charcol('.') - 1] # カーソルの次の文字
+  # if (prevChar == "(" && nextChar == ")") || (prevChar == "{" && nextChar == "}") || (prevChar == "[" && nextChar == "]")
+    # return "\<CR>\<ESC>\<S-o>"
+  # else
+    # return "\<CR>"
+  # endif
+# enddef
 
 # クォーテーション補完
 export def AutoCloseQuot(quot: string): string
@@ -140,8 +141,8 @@ def WriteCloseTag(ket: string): string
   # ・->と入力した場合
   # ・=>と入力した場合
   # ・上記のvoidElementsに含まれる要素
-  # elementNameに/が含まれる場合
-  # elementNameが空白の場合
+  # ・elementNameに/が含まれる場合
+  # ・elementNameが空白の場合
   var elementName = FindElementName(ket)
   if prevChar == "/" || prevChar == "-" || prevChar == "=" || voidElements->count(elementName) == 1 || elementName =~ "/" || elementName == ""
     return ket
