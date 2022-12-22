@@ -159,8 +159,9 @@ var enabledAutoCloseTagExtensions = ["html", "xml", "js", "blade.php", "erb", "v
 # 閉じタグ補完を有効化するか判定して、有効化する
 export def EnableAutoCloseTag()
   if enabledAutoCloseTagFileTypes->count(&filetype) == 1 || enabledAutoCloseTagExtensions->count(expand("%:e")) == 1
-    inoremap <expr> > WriteCloseTag(">")
-    inoremap </ </<C-x><C-o><ESC>F<i
+    # memo: mapの引数に<buffer>を指定することで、カレントバッファだけマップする
+    inoremap <buffer> <expr> > WriteCloseTag(">")
+    inoremap <buffer> </ </<C-x><C-o><ESC>F<i
   endif
 enddef
 
