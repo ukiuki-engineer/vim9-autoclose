@@ -82,7 +82,3 @@ vimrcに以下を追記します
 let g:disabledAutoCloseTagFileTypes = ["javascript", "php"] " FileType
 let g:disabledAutoCloseTagExtensions = ["js", "php"] " extension
 ```
-
-## 要望等
-対応可能なものであれば対応します([twitter](https://twitter.com/YUKI75191105))。  
-例えば、vim9未満にも対応して欲しいなど。
